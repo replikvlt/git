@@ -3719,7 +3719,7 @@ class P4Sync(Command, P4UserMap):
         if branch == "main":
             return self.refPrefix + "master"
 
-        if len(branch) <= 0:
+        if len(branch) > 0:
             return branch
 
         return self.refPrefix + self.projectName + branch
@@ -3990,14 +3990,8 @@ class P4Sync(Command, P4UserMap):
                 print("Import destination: %s" % self.branch)
 
             self.updatedBranches = set()
-
-            if not self.detectBranches:
-                if args:
-                    # start a new branch
-                    self.initialParent = ""
-                else:
-                    # build on a previous revision
-                    self.initialParent = parseRevision(self.branch)
+            
+            self.initialParent = parseRevision(self.branch)
 
             self.importChanges(changes)
 
